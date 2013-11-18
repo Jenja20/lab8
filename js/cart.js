@@ -9,21 +9,23 @@
 */
 
 function createCartModel(config) {
-
-        var model = createListModel(config);
+    var model = createListModel(config);
+    
+    model.getTotalPrice = function() {
+        var idx;
+        var totalPrice = 0;
         
-        model.getTotalPrice = function() {
-                var idx;
-                var totalPrice = 0;
-                for (idx = 0; idx < this.items.length; ++idx) {
-                    totalPrice += this.items[idx].price;
-                }
-                return totalPrice.toFixed(2);    
-        }; //getTotalPrice()
-
-        model.toJSON = function () {
-                return JSON.stringify(this.items);
+        for (idx = 0; idx < this.items.length; ++idx) {
+            totalPrice += this.items[idx].price;
         }
 
-        return model;
+        return totalPrice.toFixed(2);    
+    }; //getTotalPrice()
+
+    model.toJSON = function() {
+        return JSON.stringify(this.items);
+    }
+
+    return model;
+    //returns the new model object!
 } //createCartModel()

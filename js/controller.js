@@ -2,7 +2,7 @@
     Controller for Shopping Cart page
 */
 
-$(function(){
+$(function() {
 	var formatLabels = {
 	    dvd: 'DVD',
 	    bluray: 'Blu-Ray'
@@ -30,12 +30,12 @@ $(function(){
 	//refresh to get movies from server
 	moviesModel.refresh();
 	                    
-	moviesModel.refresh();
 	//when the movies view triggers 'addToCart'
 	//add a new item to the cart, using the supplied
 	//movieID and format
-	moviesView.on('addToCart', function(data){
+	moviesView.on('addToCart', function(data) {
 	    var movie = moviesModel.getItem(data.movieID);
+
 	    if (!movie)
 	        throw 'Invalid movie ID "' + movieID + '"!'; 
 
@@ -48,32 +48,25 @@ $(function(){
 	    });
 	}); //addToCart event
     
-	$('.place-order').click(function(){
-        // post order to web server
+   $('.place-order').click(function() {
+        console.log(cartModel.toJSON());
+
         $.ajax({
             url: 'https://courses.washington.edu/info343/ajax/movies/orders/',
             type: 'POST',
             data: cartModel.toJSON(),
             contentType: 'application/json',
             success: function(responseData) {
-                //code to run after successful post
-                
-                // alert message
-                //alert(responseData.message);
-
-                // p message
-                $('.message').hide();
-                $('.message').html(responseData.message);
-                $('.message').fadeIn(1000);
-
-                cartModel.setItems([]);
+                    // code to run after successful post
+                    $('.place-order').html('You have placed your order!');
+                    $('.place-order').attr('disabled', true);
             },
+            
             error: function(jqXHR, status, errorThrown) {
-                //error with post--alert user
-                alert(errorThrown || status);
+                    alert(errorThrown || status);
             }
-        }); //ajax()
-	});  
+        });
+    });
 
     cartModel.on('change', function(){
         localStorage.setItem('cart', cartModel.toJSON());
